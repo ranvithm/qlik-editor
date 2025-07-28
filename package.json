@@ -3,22 +3,22 @@
   "version": "1.0.0",
   "description": "A React Monaco Editor component for Qlik Sense scripts with syntax highlighting and autocomplete",
   "type": "module",
-  "main": "./dist/qlik-editor.cjs.js",
-  "module": "./dist/qlik-editor.es.js",
-  "types": "./dist/index.d.ts",
+  "main": "./lib/qlik-editor.cjs.js",
+  "module": "./lib/qlik-editor.es.js",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/qlik-editor.es.js",
-      "require": "./dist/qlik-editor.cjs.js"
+      "types": "./lib/index.d.ts",
+      "import": "./lib/qlik-editor.es.js",
+      "require": "./lib/qlik-editor.cjs.js"
     },
     "./styles": {
-      "import": "./dist/style.css",
-      "require": "./dist/style.css"
+      "import": "./lib/style.css",
+      "require": "./lib/style.css"
     }
   },
   "files": [
-    "dist",
+    "lib",
     "README.md",
     "LICENSE"
   ],
@@ -47,8 +47,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "build:lib": "vite build",
+    "build": "vite build && npx tsc src/index.ts --declaration --emitDeclarationOnly --outDir lib --moduleResolution bundler --target ES2022 --module ESNext --jsx react-jsx --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck",
+    "build:lib": "vite build && npx tsc src/index.ts --declaration --emitDeclarationOnly --outDir lib --moduleResolution bundler --target ES2022 --module ESNext --jsx react-jsx --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepublishOnly": "npm run build:lib"
@@ -64,13 +64,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
-    "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
     "autoprefixer": "^10.4.21",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "eslint": "^9.30.1",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -81,10 +79,8 @@
     "react-dom": "^19.1.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
-    "tw-animate-css": "^1.3.6",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.4",
-    "vite-plugin-dts": "^4.5.4"
+    "vite": "^7.0.4"
   }
 }

@@ -1,13 +1,24 @@
 // Main exports for the Qlik Editor library
 export { default as QlikScriptEditor } from './components/QlikScriptEditor';
-export { default as QlikScriptEditorLayout } from './components/QlikScriptEditorLayout';
-export { default as QlikScriptEditorWrapper } from './components/QlikScriptEditorWrapper';
-export { default as QlikEditorUI } from './components/QlikEditorUI';
-export { default as SimpleQlikEditor } from './components/SimpleQlikEditor';
-export { default as LazyQlikScriptEditor } from './components/LazyQlikScriptEditor';
+export { default as QlikScriptEditorLayoutRefactored } from './components/QlikScriptEditorLayoutRefactored';
+export { default as QlikScriptEditorWrapperRefactored } from './components/QlikScriptEditorWrapperRefactored';
+export { default as SimpleQlikEditorRefactored } from './components/SimpleQlikEditorRefactored';
+export { default as QlikScriptEditorComplete } from './components/QlikScriptEditorComplete';
+export { default as QlikEditorDemo } from './components/QlikEditorDemo';
+
+// UI Components
+export { default as Header } from './components/ui/Header';
+export { default as Toolbar } from './components/ui/Toolbar';
+export { default as EditorContainer } from './components/ui/EditorContainer';
+export { default as StatusBar } from './components/ui/StatusBar';
 
 // Language definitions
-export { registerQlikLanguage, qlikLanguageDefinition, qlikLanguageConfiguration } from './languages/qlik';
+export { registerQlikLanguageRefactored, qlikLanguageDefinitionRefactored, qlikLanguageConfigurationRefactored, QLIK_KEYWORDS, QLIK_FUNCTIONS, ALL_FUNCTIONS } from './languages/qlik-refactored';
+
+// Hooks and utilities
+export { useQlikEditor } from './hooks/useQlikEditor';
+export { NotificationProvider, useNotification, useNotifications } from './context/NotificationContext';
+export * from './utils/editorUtils';
 
 // Types
 export interface QlikScriptEditorProps {
@@ -16,26 +27,16 @@ export interface QlikScriptEditorProps {
   variables?: string[];
 }
 
-export interface QlikEditorLayoutProps {
-  initialScript?: string;
-  variables?: string[];
-  onScriptChange?: (script: string) => void;
-  onRun?: () => void;
-  onFormat?: () => void;
-  onSave?: () => void;
-  onLoad?: () => void;
-  className?: string;
-  showToolbar?: boolean;
-  isFullscreen?: boolean;
-  onToggleFullscreen?: () => void;
-}
 
-export interface QlikEditorUIProps {
+export interface QlikScriptEditorCompleteProps {
   initialScript?: string;
   variables?: string[];
   onScriptChange?: (script: string) => void;
-  showToolbar?: boolean;
   className?: string;
+  title?: string;
+  subtitle?: string;
+  autoSave?: boolean;
+  showNotifications?: boolean;
 }
 
 // Version

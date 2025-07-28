@@ -1,26 +1,31 @@
 import React, { useRef } from 'react';
 import { Editor } from '@monaco-editor/react';
 import type { editor } from 'monaco-editor';
-import { registerQlikLanguage } from '../languages/qlik';
+import { registerQlikLanguageRefactored } from '../languages/qlik-refactored';
 
 interface QlikScriptEditorProps {
   initialScript: string;
   onChange: (value: string) => void;
   variables?: string[];
+  onMount?: (editor: editor.IStandaloneCodeEditor) => void;
 }
 
 const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
   initialScript,
   onChange,
-  variables = []
+  variables = [],
+  onMount
 }) => {
-  const editorRef = useRef<editor.IStandaloneCodeEditor>();
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor, monaco: typeof import('monaco-editor')) => {
     editorRef.current = editor;
 
     // Register the comprehensive Qlik language definition
-    registerQlikLanguage(monaco);
+    registerQlikLanguageRefactored(monaco);
+
+    // Call onMount callback if provided
+    onMount?.(editor);
 
     // Add user-defined variables to completion provider
     if (variables.length > 0) {
@@ -147,8 +152,7 @@ const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
             renderLineHighlight: 'all',
             occurrencesHighlight: 'singleFile',
             selectionHighlight: true,
-            codeLens: false,
-            lightbulb: { enabled: 'off' }
+            codeLens: false
           }}
           className="border border-gray-700 rounded-lg overflow-hidden"
         />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { designTokens, a11y, combineClasses } from './design-system';
+import { designTokens } from './design-system';
 import { cn } from '../../lib/utils';
 
 interface StatusBarProps {

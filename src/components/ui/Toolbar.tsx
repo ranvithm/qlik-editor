@@ -1,6 +1,6 @@
 import React from 'react';
-import { LucideIcon, Play, Square, RotateCcw, Download, Upload, Settings } from 'lucide-react';
-import { designTokens, componentVariants, a11y, combineClasses } from './design-system';
+import { type LucideIcon, Play, Square, RotateCcw, Download, Upload, Settings } from 'lucide-react';
+import { designTokens, componentVariants, a11y } from './design-system';
 import { cn } from '../../lib/utils';
 
 export interface ToolbarButton {
@@ -75,7 +75,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   className,
   showStatus = true
 }) => {
-  const getButtonProps = (button: ToolbarButton, index: number) => {
+  const getButtonProps = (button: ToolbarButton) => {
     let onClick = button.onClick;
     let disabled = button.disabled;
 
@@ -123,7 +123,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
         {/* Toolbar Buttons */}
         <div className="flex items-center space-x-1 sm:space-x-2" role="group">
           {buttons.map((button, index) => {
-            const buttonProps = getButtonProps(button, index);
+            const buttonProps = getButtonProps(button);
             const Icon = buttonProps.icon;
             const isPrimary = buttonProps.variant === 'primary';
             const isLoading = buttonProps.loading || (isRunning && buttonProps.label === 'Run Script');

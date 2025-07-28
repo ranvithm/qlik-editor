@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import QlikScriptEditor from './QlikScriptEditor';
 import Header from './ui/Header';
-import Toolbar, { ToolbarButton } from './ui/Toolbar';
+import Toolbar, { type ToolbarButton } from './ui/Toolbar';
 import EditorContainer from './ui/EditorContainer';
 import StatusBar from './ui/StatusBar';
 import { designTokens, a11y } from './ui/design-system';

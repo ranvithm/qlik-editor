@@ -5,7 +5,16 @@
       "Bash(npx tailwindcss init:*)",
       "Bash(yarn dlx:*)",
       "Bash(npm run dev:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(rm:*)",
+      "Bash(npm run build:*)",
+      "Bash(find lib -name \"*.d.ts\")",
+      "Bash(find src -name \"*.ts\" -o -name \"*.tsx\")",
+      "Bash(npx tsc src/index.ts --declaration --emitDeclarationOnly --outDir lib --moduleResolution bundler --target ES2022 --module ESNext --jsx react-jsx --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck)",
+      "Bash(ls -la lib/)",
+      "Bash(npm run generate:index)",
+      "Bash(find:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": []
   }

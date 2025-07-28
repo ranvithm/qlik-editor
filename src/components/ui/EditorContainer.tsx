@@ -1,5 +1,5 @@
 import React from 'react';
-import { designTokens, componentVariants, a11y, combineClasses } from './design-system';
+import { designTokens, componentVariants } from './design-system';
 import { cn } from '../../lib/utils';
 
 interface EditorHeaderProps {

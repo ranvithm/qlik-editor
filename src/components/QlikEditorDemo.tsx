@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import QlikScriptEditorComplete from './QlikScriptEditorComplete';
-import { designTokens, componentVariants } from './ui/design-system';
+import { designTokens } from './ui/design-system';
 import { cn } from '../lib/utils';
 
 const SAMPLE_SCRIPT = `// Sample Qlik Sense Data Load Script

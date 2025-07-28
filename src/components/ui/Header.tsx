@@ -1,6 +1,6 @@
 import React from 'react';
 import { Minimize2, Maximize2 } from 'lucide-react';
-import { designTokens, componentVariants, a11y, combineClasses } from './design-system';
+import { designTokens, componentVariants, a11y } from './design-system';
 import { cn } from '../../lib/utils';
 
 interface HeaderProps {
