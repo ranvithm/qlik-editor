@@ -15,7 +15,12 @@
       "Bash(npm run generate:index)",
       "Bash(find:*)",
       "Bash(npm uninstall:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "Bash(npx kill-port:*)",
+      "Bash(true)",
+      "Bash(taskkill:*)",
+      "Bash(yarn install)",
+      "Bash(npm run lint:*)"
     ],
     "deny": []
   }

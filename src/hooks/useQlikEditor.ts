@@ -67,8 +67,6 @@ export interface UseQlikEditorReturn {
 export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditorReturn {
   const {
     initialScript = '',
-    autoSave = false,
-    autoSaveInterval = 30000, // 30 seconds
     onScriptChange,
     onExecutionComplete,
     onError,

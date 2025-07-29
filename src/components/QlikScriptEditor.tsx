@@ -1,13 +1,20 @@
-import React, { useRef } from 'react';
-import { Editor } from '@monaco-editor/react';
-import type { editor } from 'monaco-editor';
-import { registerQlikLanguageRefactored } from '../languages/qlik-refactored';
+"use client"
+
+import type React from "react"
+import { useRef, useEffect } from "react"
+import type { editor } from "monaco-editor"
+// import { useTheme } from "next-themes" // Not available
+import type { EditorSettings } from "./ui/SettingsPanel"
+import { defaultSettings } from "./ui/SettingsPanel"
+import { registerQlikLanguageRefactored } from "../languages/qlik-refactored"
+import { Editor } from "@monaco-editor/react"
 
 interface QlikScriptEditorProps {
-  initialScript: string;
-  onChange: (value: string) => void;
-  variables?: string[];
-  onMount?: (editor: editor.IStandaloneCodeEditor) => void;
+  initialScript: string
+  onChange: (script: string) => void
+  variables: string[] // For auto-completion (though not yet fully implemented in language def)
+  onMount?: (editor: editor.IStandaloneCodeEditor) => void
+  settings?: EditorSettings
 }
 
 const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
@@ -161,4 +168,4 @@ const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
   );
 };
 
-export default QlikScriptEditor;
+export default QlikScriptEditor

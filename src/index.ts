@@ -4,7 +4,6 @@ export { default as QlikScriptEditorLayoutRefactored } from './components/QlikSc
 export { default as QlikScriptEditorWrapperRefactored } from './components/QlikScriptEditorWrapperRefactored';
 export { default as SimpleQlikEditorRefactored } from './components/SimpleQlikEditorRefactored';
 export { default as QlikScriptEditorComplete } from './components/QlikScriptEditorComplete';
-export { default as QlikEditorDemo } from './components/QlikEditorDemo';
 
 // UI Components
 export { default as Header } from './components/ui/Header';
@@ -17,7 +16,6 @@ export { registerQlikLanguageRefactored, qlikLanguageDefinitionRefactored, qlikL
 
 // Hooks and utilities
 export { useQlikEditor } from './hooks/useQlikEditor';
-export { NotificationProvider, useNotification, useNotifications } from './context/NotificationContext';
 export * from './utils/editorUtils';
 
 // Types

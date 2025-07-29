@@ -616,7 +616,7 @@ export const qlikLanguageConfigurationRefactored: languages.LanguageConfiguratio
       action: { indentAction: languages.IndentAction.None, appendText: ' * ' }
     },
     {
-      beforeText: /^(\t|(  ))*  \*( ([^*]|\*(?!\/))*)?$/,
+      beforeText: /^(\t|( {2}))* {2}\*( ([^*]|\*(?!\/))*)?$/,
       action: { indentAction: languages.IndentAction.None, appendText: '* ' }
     }
   ]

@@ -1,116 +1,68 @@
-import React from 'react';
-import { designTokens, componentVariants } from './design-system';
-import { cn } from '../../lib/utils';
+"use client"
+
+import type React from "react"
+import { Badge } from "./badge"
+import { componentVariants } from "./design-system"
+import { cn } from "../../lib/utils"
 
 interface EditorHeaderProps {
-  filename?: string;
-  language?: string;
-  showControls?: boolean;
+  filename?: string
+  language?: string
+  showControls?: boolean
 }
 
 interface EditorContainerProps {
-  children: React.ReactNode;
-  className?: string;
-  showHeader?: boolean;
-  headerProps?: EditorHeaderProps;
-  fullHeight?: boolean;
-  interactive?: boolean;
+  children: React.ReactNode
+  className?: string
+  showHeader?: boolean
+  headerProps?: EditorHeaderProps
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({
   filename = "script.qvs",
   language = "qlik",
-  showControls = true
+  showControls = true,
 }) => {
   return (
-    <div className={cn(
-      designTokens.colors.bg.tertiary,
-      designTokens.colors.border.primary,
-      "px-4 py-2 border-b flex items-center justify-between"
-    )}>
-      <div className="flex items-center space-x-2">
-        {/* Window Controls */}
+    <div className="flex items-center justify-between h-10 px-4 bg-muted/20 border-b border-border/30">
+      <div className="flex items-center space-x-3">
         {showControls && (
-          <div className="flex space-x-1" aria-hidden="true">
-            <div className="w-3 h-3 rounded-full bg-red-400"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-            <div className="w-3 h-3 rounded-full bg-green-400"></div>
+          <div className="flex items-center space-x-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-green-400/70" />
           </div>
         )}
-        
-        <span className={cn(
-          designTokens.typography.body.primary,
-          designTokens.colors.text.secondary,
-          "font-medium ml-2"
-        )}>
-          {filename}
-        </span>
+
+        <span className="text-sm font-medium text-foreground/80">{filename}</span>
       </div>
-      
-      <div className="flex items-center space-x-2">
-        <span className={cn(
-          designTokens.typography.body.secondary,
-          designTokens.colors.text.muted,
-          "hidden md:inline"
-        )}>
-          Qlik Sense Script
-        </span>
-        <span className={cn(
-          componentVariants.badge.default,
-          "font-mono"
-        )}>
-          {language}
-        </span>
-      </div>
+
+      <Badge variant="outline" className="h-5 px-2 text-xs font-mono bg-background/50">
+        {language}
+      </Badge>
     </div>
-  );
-};
+  )
+}
 
 const EditorContainer: React.FC<EditorContainerProps> = ({
   children,
   className,
   showHeader = true,
   headerProps = {},
-  fullHeight = true,
-  interactive = true
 }) => {
-  const containerClasses = cn(
-    componentVariants.panel.editor,
-    fullHeight ? "flex-1 min-h-0" : "h-96",
-    interactive ? "group" : "",
-    className
-  );
-
-  const wrapperClasses = cn(
-    "h-full w-full",
-    designTokens.colors.bg.editor,
-    "overflow-hidden",
-    showHeader ? "" : designTokens.radius.lg
-  );
-
-  const editorClasses = cn(
-    "w-full",
-    showHeader ? "h-[calc(100%-3rem)]" : "h-full"
-  );
-
   return (
-    <div 
-      className={containerClasses}
+    <div
+      className={cn("flex flex-col h-full w-full", componentVariants.panel.glass, "overflow-hidden", className)}
       role="region"
       aria-label="Code editor"
     >
-      <div className={wrapperClasses}>
-        {showHeader && <EditorHeader {...headerProps} />}
-        
-        <div 
-          className={editorClasses}
-          aria-label="Monaco editor content"
-        >
-          {children}
-        </div>
+      {showHeader && <EditorHeader {...headerProps} />}
+
+      <div className={cn("flex-1 min-h-0", showHeader ? "" : "h-full")}>
+        {children}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default EditorContainer;
+export default EditorContainer

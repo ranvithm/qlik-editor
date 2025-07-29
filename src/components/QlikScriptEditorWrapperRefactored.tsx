@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import QlikScriptEditor from './QlikScriptEditor';
-import { designTokens, componentVariants, a11y, responsiveSpacing } from './ui/design-system';
+import { designTokens, componentVariants, a11y } from './ui/design-system';
 import { cn } from '../lib/utils';
 
 interface QlikScriptEditorWrapperRefactoredProps {
@@ -45,7 +45,7 @@ const QlikScriptEditorWrapperRefactored: React.FC<QlikScriptEditorWrapperRefacto
       {/* Skip Navigation for Accessibility */}
       <a
         href="#main-editor"
-        className={a11y.skipLink}
+        className={a11y.srOnly}
       >
         Skip to main editor
       </a>
@@ -55,15 +55,11 @@ const QlikScriptEditorWrapperRefactored: React.FC<QlikScriptEditorWrapperRefacto
         className={cn(
           designTokens.colors.bg.secondary,
           designTokens.colors.border.primary,
-          "border-b flex-shrink-0",
-          responsiveSpacing('md', 'lg', 'xl')
+          "border-b flex-shrink-0 p-6"
         )}
         role="banner"
       >
-        <div className={cn(
-          designTokens.layout.container,
-          designTokens.layout.maxWidth
-        )}>
+        <div className="max-w-7xl mx-auto">
           <h1 className={cn(
             designTokens.typography.heading.primary,
             designTokens.colors.text.primary
@@ -84,21 +80,19 @@ const QlikScriptEditorWrapperRefactored: React.FC<QlikScriptEditorWrapperRefacto
       <main 
         id="main-editor"
         className={cn(
-          "flex-1 flex flex-col min-h-0",
-          responsiveSpacing('xs', 'md', 'lg')
+          "flex-1 flex flex-col min-h-0 p-4"
         )}
         role="main"
       >
         <div className={cn(
-          designTokens.layout.container,
-          designTokens.layout.maxWidth,
+          "max-w-7xl mx-auto",
           "flex-1 flex flex-col min-h-0"
         )}>
           {/* Editor Toolbar */}
           <div className={cn(
             designTokens.colors.bg.secondary,
             designTokens.colors.border.primary,
-            componentVariants.panel.primary,
+            componentVariants.panel.clean,
             "flex-shrink-0 p-2 sm:p-3 rounded-t-lg"
           )}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -111,10 +105,7 @@ const QlikScriptEditorWrapperRefactored: React.FC<QlikScriptEditorWrapperRefacto
                   Script Editor
                 </span>
                 {variables.length > 0 && (
-                  <span className={cn(
-                    componentVariants.badge.default,
-                    "text-xs"
-                  )}>
+                  <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
                     {variables.length} variables available
                   </span>
                 )}
@@ -141,7 +132,7 @@ const QlikScriptEditorWrapperRefactored: React.FC<QlikScriptEditorWrapperRefacto
             designTokens.colors.bg.editor,
             designTokens.colors.border.primary,
             "border-x border-b rounded-b-lg",
-            designTokens.shadows.interactive,
+            designTokens.shadows.soft,
             designTokens.transitions.normal,
             "hover:shadow-lg focus-within:ring-2 focus-within:ring-blue-500/20"
           )}>
@@ -159,40 +150,26 @@ const QlikScriptEditorWrapperRefactored: React.FC<QlikScriptEditorWrapperRefacto
         className={cn(
           designTokens.colors.bg.secondary,
           designTokens.colors.border.primary,
-          "border-t flex-shrink-0",
-          responsiveSpacing('md', 'lg', 'xl')
+          "border-t flex-shrink-0 p-6"
         )}
         role="contentinfo"
       >
-        <div className={cn(
-          designTokens.layout.container,
-          designTokens.layout.maxWidth,
-          "text-center"
-        )}>
+        <div className="max-w-7xl mx-auto text-center">
           <p className={cn(
             designTokens.colors.text.muted,
             designTokens.typography.body.secondary,
             "sm:text-sm"
           )}>
             Use{' '}
-            <kbd className={cn(
-              componentVariants.badge.default,
-              "font-mono px-1"
-            )}>
+            <kbd className="inline-flex items-center px-1 rounded font-mono text-xs bg-muted">
               Ctrl+Space
             </kbd>
             {' '}for auto-completion •{' '}
-            <kbd className={cn(
-              componentVariants.badge.default,
-              "font-mono px-1"
-            )}>
+            <kbd className="inline-flex items-center px-1 rounded font-mono text-xs bg-muted">
               Ctrl+/
             </kbd>
             {' '}for comments •{' '}
-            <kbd className={cn(
-              componentVariants.badge.default,
-              "font-mono px-1"
-            )}>
+            <kbd className="inline-flex items-center px-1 rounded font-mono text-xs bg-muted">
               Ctrl+F
             </kbd>
             {' '}for search

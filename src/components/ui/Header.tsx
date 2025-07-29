@@ -1,111 +1,85 @@
-import React from 'react';
-import { Minimize2, Maximize2 } from 'lucide-react';
-import { designTokens, componentVariants, a11y } from './design-system';
-import { cn } from '../../lib/utils';
+"use client"
+
+import type React from "react"
+import { Maximize2, Minimize2, Code2 } from "lucide-react"
+import { Button } from "./button"
+import { Badge } from "./badge"
+import { designTokens, a11y } from "./design-system"
+import { cn } from "../../lib/utils"
 
 interface HeaderProps {
-  title?: string;
-  subtitle?: string;
-  variablesCount?: number;
+  title?: string
+  subtitle?: string
+  variablesCount?: number
   scriptStats?: {
-    lines: number;
-    characters: number;
-  };
-  isFullscreen?: boolean;
-  onToggleFullscreen?: () => void;
-  className?: string;
+    lines: number
+    characters: number
+  }
+  isFullscreen?: boolean
+  onToggleFullscreen?: () => void
+  className?: string
 }
 
 const Header: React.FC<HeaderProps> = ({
   title = "Qlik Script Editor",
-  subtitle,
   variablesCount = 0,
   scriptStats,
   isFullscreen = false,
   onToggleFullscreen,
-  className
+  className,
 }) => {
   return (
-    <header 
+    <header
       className={cn(
-        designTokens.colors.bg.secondary,
-        designTokens.colors.border.primary,
-        "border-b flex-shrink-0 px-4 py-3 sm:px-6",
-        className
+        "flex items-center justify-between h-14 px-6",
+        designTokens.colors.bg.glass,
+        "border-b border-border/30",
+        "supports-[backdrop-filter]:bg-background/60",
+        className,
       )}
       role="banner"
     >
-      <div className="flex items-center justify-between">
-        {/* Title Section */}
-        <div className="flex items-center space-x-3">
-          <h1 className={cn(
-            designTokens.typography.heading.secondary,
-            designTokens.colors.text.primary
-          )}>
-            {title}
-          </h1>
-          
-          {subtitle && (
-            <p className={cn(
-              designTokens.colors.text.secondary,
-              designTokens.typography.body.primary,
-              "hidden sm:block"
-            )}>
-              {subtitle}
-            </p>
-          )}
-          
-          {variablesCount > 0 && (
-            <span 
-              className={componentVariants.badge.accent}
-              aria-label={`${variablesCount} variables available`}
-            >
-              {variablesCount} variables
-            </span>
-          )}
+      {/* Left - Title */}
+      <div className="flex items-center space-x-3">
+        <div className="flex items-center justify-center w-7 h-7 rounded-md bg-primary/10">
+          <Code2 className="h-4 w-4 text-primary" />
         </div>
 
-        {/* Controls Section */}
-        <div className="flex items-center space-x-2">
-          {/* Script Statistics */}
-          {scriptStats && (
-            <div 
-              className={cn(
-                "hidden sm:flex items-center space-x-4",
-                designTokens.typography.body.primary,
-                designTokens.colors.text.secondary
-              )}
-              aria-label="Script statistics"
-            >
-              <span>Lines: {scriptStats.lines}</span>
-              <span className={designTokens.colors.text.muted} aria-hidden="true">|</span>
-              <span>Chars: {scriptStats.characters}</span>
-            </div>
-          )}
+        <div className="flex items-center space-x-4">
+          <h1 className={cn(designTokens.typography.heading.secondary, "text-foreground")}>{title}</h1>
 
-          {/* Fullscreen Toggle */}
-          {onToggleFullscreen && (
-            <button
-              onClick={onToggleFullscreen}
-              className={cn(
-                componentVariants.button.ghost,
-                "p-2",
-                a11y.focusRing
-              )}
-              title={isFullscreen ? 'Exit Fullscreen (Esc)' : 'Enter Fullscreen (F11)'}
-              aria-label={isFullscreen ? 'Exit fullscreen mode' : 'Enter fullscreen mode'}
-            >
-              {isFullscreen ? (
-                <Minimize2 className="h-4 w-4" aria-hidden="true" />
-              ) : (
-                <Maximize2 className="h-4 w-4" aria-hidden="true" />
-              )}
-            </button>
+          {variablesCount > 0 && (
+            <Badge variant="secondary" className="h-5 px-2 text-xs font-medium">
+              {variablesCount} vars
+            </Badge>
           )}
         </div>
       </div>
-    </header>
-  );
-};
 
-export default Header;
+      {/* Right - Stats & Controls */}
+      <div className="flex items-center space-x-4">
+        {scriptStats && (
+          <div className="hidden md:flex items-center space-x-3 text-xs text-muted-foreground">
+            <span>{scriptStats.lines.toLocaleString()} lines</span>
+            <span>•</span>
+            <span>{scriptStats.characters.toLocaleString()} chars</span>
+          </div>
+        )}
+
+        {onToggleFullscreen && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleFullscreen}
+            className={cn("h-7 w-7 p-0", a11y.focusRing)}
+            title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+          >
+            {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+          </Button>
+        )}
+      </div>
+    </header>
+  )
+}
+
+export default Header
