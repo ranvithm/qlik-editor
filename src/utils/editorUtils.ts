@@ -148,12 +148,13 @@ function formatSelectStatement(line: string): string {
 /**
  * Save script to local file
  */
-export async function saveScriptToFile(script: string, filename?: string): Promise<void> {
+export async function saveScriptToFile(script: string, filename?: string, isUserGesture: boolean = true): Promise<void> {
   const actualFilename = filename || `qlik-script-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.qvs`;
   
   try {
     // Check if we're in a browser environment that supports File System Access API
-    if ('showSaveFilePicker' in window) {
+    // and this is a user gesture (required for showSaveFilePicker)
+    if ('showSaveFilePicker' in window && isUserGesture) {
       const fileHandle = await window.showSaveFilePicker({
         suggestedName: actualFilename,
         types: [
@@ -170,14 +171,27 @@ export async function saveScriptToFile(script: string, filename?: string): Promi
       await writable.write(script);
       await writable.close();
     } else {
-      // Fallback to download
-      downloadScript(script, actualFilename);
+      // For auto-save or when File System Access API is not available,
+      // store in localStorage as a fallback
+      if (!isUserGesture) {
+        localStorage.setItem('qlik-editor-autosave', script);
+        localStorage.setItem('qlik-editor-autosave-timestamp', new Date().toISOString());
+      } else {
+        // Fallback to download for user-initiated saves
+        downloadScript(script, actualFilename);
+      }
     }
   } catch (error) {
     if ((error as Error).name !== 'AbortError') {
       console.error('Failed to save file:', error);
-      // Fallback to download
-      downloadScript(script, actualFilename);
+      // For auto-save failures, store in localStorage
+      if (!isUserGesture) {
+        localStorage.setItem('qlik-editor-autosave', script);
+        localStorage.setItem('qlik-editor-autosave-timestamp', new Date().toISOString());
+      } else {
+        // Fallback to download for user-initiated saves
+        downloadScript(script, actualFilename);
+      }
     }
   }
 }

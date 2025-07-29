@@ -4,6 +4,7 @@ import Header from './ui/Header';
 import Toolbar from './ui/Toolbar';
 import EditorContainer from './ui/EditorContainer';
 import StatusBar from './ui/StatusBar';
+import { SettingsPanel } from './ui/SettingsPanel';
 import { NotificationProvider, useNotifications } from '../context/NotificationContext';
 import { useQlikEditor } from '../hooks/useQlikEditor';
 import { setNotificationHandler } from '../utils/editorUtils';
@@ -163,7 +164,7 @@ const QlikScriptEditorCompleteInner: React.FC<QlikScriptEditorCompleteProps> = (
     {
       icon: Settings,
       label: 'Settings',
-      onClick: () => notifications.showInfo('Settings', 'Settings panel coming soon!'),
+      onClick: editor.toggleSettings,
       variant: 'secondary' as const
     }
   ];
@@ -334,6 +335,15 @@ const QlikScriptEditorCompleteInner: React.FC<QlikScriptEditorCompleteProps> = (
           </div>
         </div>
       )}
+
+      {/* Settings Panel */}
+      <SettingsPanel
+        isOpen={editor.isSettingsOpen}
+        onClose={editor.toggleSettings}
+        settings={editor.settings}
+        onSettingsChange={editor.updateSettings}
+        onResetSettings={editor.resetSettings}
+      />
     </div>
   );
 };
