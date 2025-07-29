@@ -598,7 +598,7 @@ export const qlikLanguageConfigurationRefactored: languages.LanguageConfiguratio
     offSide: true
   },
   
-  wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
+  wordPattern: /(-?\d*\.\d\w*)|([^`~!@#%^&*()\\=+[{}\\|;:'\",./<>?\\s-]+)/g,
   
   indentationRules: {
     increaseIndentPattern: /^((?!\/\/).)*((\{[^}"'`]*)|(\([^)"'`]*)|(\[[^\]"'`]*))$/,
@@ -607,16 +607,16 @@ export const qlikLanguageConfigurationRefactored: languages.LanguageConfiguratio
   
   onEnterRules: [
     {
-      beforeText: /^\s*\/\*\*(?!\/)([^\*]|\*(?!\/))*$/,
+      beforeText: /^\s*\/\*\*(?!\/)([^*]|\*(?!\/))*$/,
       afterText: /^\s*\*\/$/,
       action: { indentAction: languages.IndentAction.IndentOutdent, appendText: ' * ' }
     },
     {
-      beforeText: /^\s*\/\*\*(?!\/)([^\*]|\*(?!\/))*$/,
+      beforeText: /^\s*\/\*\*(?!\/)([^*]|\*(?!\/))*$/,
       action: { indentAction: languages.IndentAction.None, appendText: ' * ' }
     },
     {
-      beforeText: /^(\t|(\ \ ))*\ \*(\ ([^\*]|\*(?!\/))*)?$/,
+      beforeText: /^(\t|(  ))*  \*( ([^*]|\*(?!\/))*)?$/,
       action: { indentAction: languages.IndentAction.None, appendText: '* ' }
     }
   ]
@@ -735,7 +735,7 @@ export function registerQlikLanguageRefactored(monaco: typeof import('monaco-edi
       const wordText = word.word;
       
       // Function documentation
-      if (ALL_FUNCTIONS.includes(wordText as any)) {
+      if (ALL_FUNCTIONS.includes(wordText)) {
         const documentation = formatFunctionDocumentation(wordText);
         return {
           range: new monaco.Range(
@@ -752,7 +752,7 @@ export function registerQlikLanguageRefactored(monaco: typeof import('monaco-edi
       }
       
       // Keyword documentation
-      if (QLIK_KEYWORDS.includes(wordText.toUpperCase() as any)) {
+      if ((QLIK_KEYWORDS as readonly string[]).includes(wordText.toUpperCase())) {
         const doc = KEYWORD_DOCUMENTATION[wordText.toUpperCase()];
         if (doc) {
           return {

@@ -268,7 +268,7 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
         message: errorMessage
       });
     }
-  }, [script, autoSave, notify]);
+  }, [script, notify]);
 
   // Load script
   const handleLoad = useCallback(async () => {
@@ -309,7 +309,7 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
           message: newFullscreenState ? 'Press Esc to exit fullscreen' : 'Fullscreen mode disabled'
         });
       }
-    } catch (error) {
+    } catch {
       notify({
         type: 'error',
         title: 'Fullscreen Error',

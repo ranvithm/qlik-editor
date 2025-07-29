@@ -1,5 +1,45 @@
 import type { editor } from 'monaco-editor';
 
+// Type definitions for File System Access API
+interface FileSystemFileHandle {
+  createWritable(): Promise<FileSystemWritableFileStream>;
+}
+
+interface FileSystemWritableFileStream {
+  write(data: string): Promise<void>;
+  close(): Promise<void>;
+}
+
+interface FilePickerOptions {
+  suggestedName?: string;
+  types?: Array<{
+    description: string;
+    accept: Record<string, string[]>;
+  }>;
+}
+
+declare global {
+  interface Window {
+    showSaveFilePicker(options?: FilePickerOptions): Promise<FileSystemFileHandle>;
+    showOpenFilePicker(options?: FilePickerOptions): Promise<FileSystemFileHandle[]>;
+  }
+
+  interface HTMLElement {
+    webkitRequestFullscreen?(): Promise<void>;
+    msRequestFullscreen?(): Promise<void>;
+    mozRequestFullScreen?(): Promise<void>;
+  }
+
+  interface Document {
+    webkitExitFullscreen?(): Promise<void>;
+    msExitFullscreen?(): Promise<void>;
+    mozCancelFullScreen?(): Promise<void>;
+    webkitFullscreenElement?: Element | null;
+    msFullscreenElement?: Element | null;
+    mozFullScreenElement?: Element | null;
+  }
+}
+
 // ============================
 // SCRIPT FORMATTING UTILITIES
 // ============================
@@ -16,7 +56,7 @@ export function formatQlikScript(script: string): string {
   let inComment = false;
 
   for (let i = 0; i < lines.length; i++) {
-    let line = lines[i].trim();
+    const line = lines[i].trim();
     
     if (!line) {
       formattedLines.push('');
@@ -114,7 +154,7 @@ export async function saveScriptToFile(script: string, filename?: string): Promi
   try {
     // Check if we're in a browser environment that supports File System Access API
     if ('showSaveFilePicker' in window) {
-      const fileHandle = await (window as any).showSaveFilePicker({
+      const fileHandle = await window.showSaveFilePicker({
         suggestedName: actualFilename,
         types: [
           {
@@ -168,7 +208,7 @@ export async function loadScriptFromFile(): Promise<string | null> {
   try {
     // Check if we're in a browser environment that supports File System Access API
     if ('showOpenFilePicker' in window) {
-      const [fileHandle] = await (window as any).showOpenFilePicker({
+      const [fileHandle] = await window.showOpenFilePicker({
         types: [
           {
             description: 'Qlik Script files',
@@ -336,12 +376,12 @@ export async function enterFullscreen(element?: HTMLElement): Promise<boolean> {
   try {
     if (targetElement.requestFullscreen) {
       await targetElement.requestFullscreen();
-    } else if ((targetElement as any).webkitRequestFullscreen) {
-      await (targetElement as any).webkitRequestFullscreen();
-    } else if ((targetElement as any).msRequestFullscreen) {
-      await (targetElement as any).msRequestFullscreen();
-    } else if ((targetElement as any).mozRequestFullScreen) {
-      await (targetElement as any).mozRequestFullScreen();
+    } else if (targetElement.webkitRequestFullscreen) {
+      await targetElement.webkitRequestFullscreen();
+    } else if (targetElement.msRequestFullscreen) {
+      await targetElement.msRequestFullscreen();
+    } else if (targetElement.mozRequestFullScreen) {
+      await targetElement.mozRequestFullScreen();
     }
     return true;
   } catch (error) {
@@ -357,12 +397,12 @@ export async function exitFullscreen(): Promise<boolean> {
   try {
     if (document.exitFullscreen) {
       await document.exitFullscreen();
-    } else if ((document as any).webkitExitFullscreen) {
-      await (document as any).webkitExitFullscreen();
-    } else if ((document as any).msExitFullscreen) {
-      await (document as any).msExitFullscreen();
-    } else if ((document as any).mozCancelFullScreen) {
-      await (document as any).mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      await document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      await document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      await document.mozCancelFullScreen();
     }
     return true;
   } catch (error) {
@@ -377,9 +417,9 @@ export async function exitFullscreen(): Promise<boolean> {
 export function isFullscreenActive(): boolean {
   return !!(
     document.fullscreenElement ||
-    (document as any).webkitFullscreenElement ||
-    (document as any).msFullscreenElement ||
-    (document as any).mozFullScreenElement
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement ||
+    document.mozFullScreenElement
   );
 }
 

@@ -89,7 +89,7 @@ const QlikScriptEditorCompleteInner: React.FC<QlikScriptEditorCompleteProps> = (
   }, [notifications]);
 
   // Handle Monaco editor reference
-  const handleEditorMount = (editorInstance: any) => {
+  const handleEditorMount = (editorInstance: editor.IStandaloneCodeEditor) => {
     editor.setEditorRef(editorInstance);
   };
 
