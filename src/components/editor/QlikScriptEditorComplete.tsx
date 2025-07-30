@@ -24,6 +24,7 @@ import {
   X,
   Undo2,
   Redo2,
+  Database,
 } from "lucide-react";
 import type { editor } from "monaco-editor";
 
@@ -112,6 +113,14 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
       shortcut: "⌘O",
       group: "secondary" as const,
     },
+    {
+      icon: Database,
+      label: "Insert Inline Data",
+      onClick: editor.handleInsertInlineData,
+      variant: "ghost" as const,
+      shortcut: "⌘I",
+      group: "secondary" as const,
+    },
   ];
 
   const scriptStats = React.useMemo(() => {
@@ -170,6 +179,7 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         onFormat={editor.handleFormat}
         onSave={editor.handleSave}
         onLoad={editor.handleLoad}
+        onInsertInlineData={editor.handleInsertInlineData}
       />
 
       {/* Validation Errors - Dynamic height */}

@@ -20,7 +20,8 @@
       "Bash(true)",
       "Bash(taskkill:*)",
       "Bash(yarn install)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(pkill:*)"
     ],
     "deny": []
   }

@@ -38,6 +38,7 @@ interface ToolbarProps {
   onFormat?: () => void
   onSave?: () => void
   onLoad?: () => void
+  onInsertInlineData?: () => void
   className?: string
 }
 
@@ -102,6 +103,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onFormat,
   onSave,
   onLoad,
+  onInsertInlineData,
   className,
 }) => {
   const getButtonProps = (button: ToolbarButton) => {
@@ -131,6 +133,9 @@ const Toolbar: React.FC<ToolbarProps> = ({
         break
       case "Load":
         onClick = onLoad
+        break
+      case "Insert Inline Data":
+        onClick = onInsertInlineData
         break
     }
 

@@ -5,6 +5,7 @@ import { useRef, useEffect, useState, useCallback } from "react"
 import type { editor } from "monaco-editor"
 import { useTheme } from "./theme-provider"
 import { registerQlikLanguageRefactored } from "@/languages/qlik-refactored"
+import { setupEditorContextMenu } from "./context-menu"
 import { Editor } from "@monaco-editor/react"
 
 interface QlikScriptEditorProps {
@@ -33,12 +34,16 @@ const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
     return theme === 'dark' ? 'qlik-dark' : 'qlik-light';
   }, [theme]);
 
+
   const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor, monaco: typeof import('monaco-editor')) => {
     editorRef.current = editor;
     monacoRef.current = monaco;
 
     // Register the comprehensive Qlik language definition
     registerQlikLanguageRefactored(monaco);
+
+    // Configure context menu
+    setupEditorContextMenu(editor, monaco);
 
     // Call onMount callback if provided
     onMount?.(editor);

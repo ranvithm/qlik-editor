@@ -3,6 +3,7 @@ import type { editor } from 'monaco-editor';
 // Type definitions for File System Access API
 interface FileSystemFileHandle {
   createWritable(): Promise<FileSystemWritableFileStream>;
+  getFile(): Promise<File>;
 }
 
 interface FileSystemWritableFileStream {
@@ -16,6 +17,7 @@ interface FilePickerOptions {
     description: string;
     accept: Record<string, string[]>;
   }>;
+  multiple?: boolean;
 }
 
 declare global {
@@ -216,13 +218,26 @@ export function downloadScript(script: string, filename: string): void {
 }
 
 /**
+ * Check if File System Access API is supported and available
+ */
+function isFileSystemAccessSupported(): boolean {
+  return 'showOpenFilePicker' in window && 
+         typeof window.showOpenFilePicker === 'function';
+}
+
+/**
  * Load script from file
  */
 export async function loadScriptFromFile(): Promise<string | null> {
+  // Use file input method for better browser compatibility
+  return await loadScriptViaInput();
+  
+  /* Keeping File System Access API code for future reference
   try {
     // Check if we're in a browser environment that supports File System Access API
-    if ('showOpenFilePicker' in window) {
-      const [fileHandle] = await window.showOpenFilePicker({
+    if (isFileSystemAccessSupported()) {
+      console.log('Using File System Access API');
+      const fileHandles = await window.showOpenFilePicker({
         types: [
           {
             description: 'Qlik Script files',
@@ -231,55 +246,109 @@ export async function loadScriptFromFile(): Promise<string | null> {
             }
           }
         ],
+        multiple: false
       });
       
-      const file = await fileHandle.getFile();
-      return await file.text();
+      console.log('showOpenFilePicker returned:', fileHandles ? fileHandles.length : 'null', 'file handles');
+      
+      if (fileHandles && fileHandles.length > 0) {
+        const fileHandle = fileHandles[0];
+        console.log('Getting file from handle...');
+        const file = await fileHandle.getFile();
+        console.log('File obtained, name:', file.name, 'size:', file.size);
+        const text = await file.text();
+        console.log('File text read, length:', text.length);
+        return text;
+      }
+      console.log('No file handles returned');
+      return null;
     } else {
+      console.log('File System Access API not supported, using fallback');
       // Fallback to input file
       return await loadScriptViaInput();
     }
   } catch (error) {
+    console.error('Error in loadScriptFromFile:', error);
     if ((error as Error).name !== 'AbortError') {
       console.error('Failed to load file:', error);
+      // Fallback to input method if File System Access API fails
+      console.log('Falling back to input method due to error');
+      return await loadScriptViaInput();
     }
     return null;
   }
+  */
 }
 
 /**
- * Load script via file input (fallback method)
+ * Load script via file input method
  */
 export function loadScriptViaInput(): Promise<string | null> {
   return new Promise((resolve) => {
+    // Create file input element
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.qvs,.txt,.sql';
-    input.style.display = 'none';
+    input.accept = '.qvs,.txt,.sql,.js,.ts,.json,text/plain';
+    input.style.position = 'fixed';
+    input.style.top = '-1000px';
+    input.style.left = '-1000px';
+    input.style.opacity = '0';
+    input.style.pointerEvents = 'none';
     
-    input.onchange = async (event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
+    // File selection handler
+    const handleFileSelect = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+      
       if (file) {
         try {
-          const text = await file.text();
-          resolve(text);
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const content = e.target?.result as string;
+            cleanup();
+            resolve(content);
+          };
+          reader.onerror = () => {
+            cleanup();
+            resolve(null);
+          };
+          reader.readAsText(file);
         } catch (error) {
-          console.error('Failed to read file:', error);
+          cleanup();
           resolve(null);
         }
       } else {
+        cleanup();
         resolve(null);
       }
-      document.body.removeChild(input);
     };
     
-    input.oncancel = () => {
-      resolve(null);
-      document.body.removeChild(input);
+    // Cleanup function
+    const cleanup = () => {
+      input.removeEventListener('change', handleFileSelect);
+      if (document.body.contains(input)) {
+        document.body.removeChild(input);
+      }
     };
     
+    // Add event listener
+    input.addEventListener('change', handleFileSelect, { once: true });
+    
+    // Add to DOM and trigger
     document.body.appendChild(input);
-    input.click();
+    
+    // Trigger the file dialog
+    setTimeout(() => {
+      input.click();
+    }, 10);
+    
+    // Timeout safety
+    setTimeout(() => {
+      if (document.body.contains(input)) {
+        cleanup();
+        resolve(null);
+      }
+    }, 30000);
   });
 }
 

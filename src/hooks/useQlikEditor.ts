@@ -46,6 +46,7 @@ export interface UseQlikEditorReturn {
   handleRedo: () => void;
   handleFind: () => void;
   handleReplace: () => void;
+  handleInsertInlineData: () => void;
   
   // Editor management
   editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null>;
@@ -265,7 +266,8 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
   const handleLoad = useCallback(async () => {
     try {
       const loadedScript = await loadScriptFromFile();
-      if (loadedScript !== null) {
+      
+      if (loadedScript !== null && loadedScript !== undefined && loadedScript.trim()) {
         setScript(loadedScript);
         lastSavedScriptRef.current = loadedScript;
         setHasUnsavedChanges(false);
@@ -276,6 +278,7 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
           message: 'Script has been loaded successfully'
         });
       }
+      // User cancelled or no file selected - this is not an error, so no notification needed
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Load failed';
       notify({
@@ -334,6 +337,47 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
     }
   }, []);
 
+  // Insert inline data at cursor position
+  const handleInsertInlineData = useCallback(() => {
+    if (editorRef.current) {
+      const position = editorRef.current.getPosition();
+      if (position) {
+        const inlineDataTemplate = `LOAD * INLINE [
+    ID, Name, Category, Price
+    1, Product A, Electronics, 299.99
+    2, Product B, Books, 19.99
+    3, Product C, Clothing, 49.99
+    4, Product D, Electronics, 599.99
+    5, Product E, Books, 29.99
+];`;
+        
+        editorRef.current.executeEdits('insert-inline-data', [{
+          range: {
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: position.column,
+            endColumn: position.column
+          },
+          text: inlineDataTemplate
+        }]);
+        
+        // Move cursor to end of inserted text
+        const lines = inlineDataTemplate.split('\n');
+        const lastLine = lines[lines.length - 1];
+        editorRef.current.setPosition({
+          lineNumber: position.lineNumber + lines.length - 1,
+          column: lastLine.length + 1
+        });
+        
+        notify({
+          type: 'success',
+          title: 'Inline Data Inserted',
+          message: 'Sample inline data has been inserted at cursor position'
+        });
+      }
+    }
+  }, [notify]);
+
   // Listen for fullscreen changes
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -378,6 +422,10 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
             event.preventDefault();
             handleLoad();
             break;
+          case 'i':
+            event.preventDefault();
+            handleInsertInlineData();
+            break;
           case 'r':
             event.preventDefault();
             handleRun();
@@ -406,7 +454,7 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleSave, handleLoad, handleRun, handleToggleFullscreen, handleStop, isRunning]);
+  }, [handleSave, handleLoad, handleInsertInlineData, handleRun, handleToggleFullscreen, handleStop, isRunning]);
 
   return {
     // State
@@ -432,6 +480,7 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
     handleRedo,
     handleFind,
     handleReplace,
+    handleInsertInlineData,
     
     // Editor management
     editorRef,
