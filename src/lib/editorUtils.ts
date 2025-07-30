@@ -231,7 +231,6 @@ export async function loadScriptFromFile(): Promise<string | null> {
             }
           }
         ],
-        multiple: false
       });
       
       const file = await fileHandle.getFile();
