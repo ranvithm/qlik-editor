@@ -2,26 +2,24 @@
 
 import React from "react";
 import QlikScriptEditor from "./QlikScriptEditor";
-import Header from "./ui/Header";
-import Toolbar from "./ui/Toolbar";
-import EditorContainer from "./ui/EditorContainer";
-import StatusBar from "./ui/StatusBar";
-import { SettingsPanel } from "./ui/SettingsPanel";
-import { useQlikEditor } from "../hooks/useQlikEditor";
-import { Progress } from "./ui/progress";
-import { Alert, AlertDescription } from "./ui/alert";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { Toaster } from "./ui/sonner";
-import { designTokens, a11y } from "./ui/design-system";
-import { cn } from "../lib/utils";
+import Toolbar from "./Toolbar";
+import EditorContainer from "./EditorContainer";
+import StatusBar from "./StatusBar";
+import { ModeToggle } from "./mode-toggle";
+import { useQlikEditor } from "../../hooks/useQlikEditor";
+import { Progress } from "../ui/progress";
+import { Alert, AlertDescription } from "../ui/alert";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { Toaster } from "../ui/sonner";
+import { designTokens, a11y } from "./design-system";
+import { cn } from "../../lib/utils";
 import {
   Play,
   Square,
   RotateCcw,
   Download,
   Upload,
-  Settings,
   AlertTriangle,
   X,
   Undo2,
@@ -48,8 +46,6 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
 }) => {
   const editor = useQlikEditor({
     initialScript,
-    autoSave: true,
-    autoSaveInterval: 30000,
     onScriptChange,
   });
 
@@ -116,13 +112,6 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
       shortcut: "⌘O",
       group: "secondary" as const,
     },
-    {
-      icon: Settings,
-      label: "Settings",
-      onClick: editor.toggleSettings,
-      variant: "ghost" as const,
-      group: "settings" as const,
-    },
   ];
 
   const scriptStats = React.useMemo(() => {
@@ -155,14 +144,21 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         Skip to editor
       </a>
 
-      <Header
-        title={title}
-        subtitle={subtitle}
-        variablesCount={variables.length}
-        scriptStats={scriptStats}
-        isFullscreen={editor.isFullscreen}
-        onToggleFullscreen={editor.handleToggleFullscreen}
-      />
+      <div className="flex items-center justify-between p-4 border-b">
+        <div>
+          <h1 className="text-xl font-semibold">{title}</h1>
+          {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary">
+            {scriptStats.lines} lines
+          </Badge>
+          <Badge variant="secondary">
+            {variables.length} variables
+          </Badge>
+          <ModeToggle />
+        </div>
+      </div>
 
       <Toolbar
         buttons={toolbarButtons}
@@ -174,13 +170,10 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         onFormat={editor.handleFormat}
         onSave={editor.handleSave}
         onLoad={editor.handleLoad}
-        onSettings={editor.toggleSettings}
       />
 
       {/* Validation Errors - Dynamic height */}
-      {editor.settings.enableValidation &&
-        editor.settings.showValidationErrors &&
-        editor.validationErrors.length > 0 && (
+      {editor.validationErrors.length > 0 && (
           <div className="flex-shrink-0 px-6 pt-4">
             <Alert className="border-red-200 bg-red-50/50 dark:border-red-800/50 dark:bg-red-950/20">
               <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
@@ -259,7 +252,6 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
             onChange={editor.setScript}
             variables={variables}
             onMount={handleEditorMount}
-            settings={editor.settings}
           />
         </EditorContainer>
       </main>
@@ -294,14 +286,6 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         </div>
       )}
 
-      {/* Settings Panel */}
-      <SettingsPanel
-        isOpen={editor.isSettingsOpen}
-        onClose={editor.toggleSettings}
-        settings={editor.settings}
-        onSettingsChange={editor.updateSettings}
-        onResetSettings={editor.resetSettings}
-      />
 
       {/* Sonner Toaster */}
       <Toaster />

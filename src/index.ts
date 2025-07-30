@@ -1,22 +1,23 @@
 // Main exports for the Qlik Editor library
-export { default as QlikScriptEditor } from './components/QlikScriptEditor';
-export { default as QlikScriptEditorLayoutRefactored } from './components/QlikScriptEditorLayoutRefactored';
-export { default as QlikScriptEditorWrapperRefactored } from './components/QlikScriptEditorWrapperRefactored';
-export { default as SimpleQlikEditorRefactored } from './components/SimpleQlikEditorRefactored';
-export { default as QlikScriptEditorComplete } from './components/QlikScriptEditorComplete';
+export { default as QlikScriptEditor } from './components/editor/QlikScriptEditor';
+export { default as QlikScriptEditorComplete } from './components/editor/QlikScriptEditorComplete';
 
 // UI Components
-export { default as Header } from './components/ui/Header';
-export { default as Toolbar } from './components/ui/Toolbar';
-export { default as EditorContainer } from './components/ui/EditorContainer';
-export { default as StatusBar } from './components/ui/StatusBar';
+export { default as Header } from './components/editor/Header';
+export { default as Toolbar } from './components/editor/Toolbar';
+export { default as EditorContainer } from './components/editor/EditorContainer';
+export { default as StatusBar } from './components/editor/StatusBar';
+export { ModeToggle } from './components/editor/mode-toggle';
+
+// Theme components
+export { ThemeProvider, useTheme } from './components/editor/theme-provider';
 
 // Language definitions
 export { registerQlikLanguageRefactored, qlikLanguageDefinitionRefactored, qlikLanguageConfigurationRefactored, QLIK_KEYWORDS, QLIK_FUNCTIONS, ALL_FUNCTIONS } from './languages/qlik-refactored';
 
 // Hooks and utilities
 export { useQlikEditor } from './hooks/useQlikEditor';
-export * from './utils/editorUtils';
+export * from './lib/editorUtils';
 
 // Types
 export interface QlikScriptEditorProps {
@@ -33,8 +34,6 @@ export interface QlikScriptEditorCompleteProps {
   className?: string;
   title?: string;
   subtitle?: string;
-  autoSave?: boolean;
-  showNotifications?: boolean;
 }
 
 // Version

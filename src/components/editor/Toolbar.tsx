@@ -8,15 +8,14 @@ import {
   RotateCcw,
   Download,
   Upload,
-  Settings,
   Loader2,
   Undo2,
   Redo2,
 } from "lucide-react"
-import { Button } from "./button"
-import { Separator } from "./separator"
+import { Button } from "../ui/button"
+import { Separator } from "../ui/separator"
 import { designTokens } from "./design-system"
-import { cn } from "../../lib/utils"
+import { cn } from "@/lib/utils"
 
 export interface ToolbarButton {
   icon: LucideIcon
@@ -39,7 +38,6 @@ interface ToolbarProps {
   onFormat?: () => void
   onSave?: () => void
   onLoad?: () => void
-  onSettings?: () => void
   className?: string
 }
 
@@ -92,12 +90,6 @@ const defaultButtons: ToolbarButton[] = [
     shortcut: "⌘O",
     group: "secondary",
   },
-  {
-    icon: Settings,
-    label: "Settings",
-    variant: "ghost",
-    group: "settings",
-  },
 ]
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -110,7 +102,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onFormat,
   onSave,
   onLoad,
-  onSettings,
   className,
 }) => {
   const getButtonProps = (button: ToolbarButton) => {
@@ -141,9 +132,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
       case "Load":
         onClick = onLoad
         break
-      case "Settings":
-        onClick = onSettings
-        break
     }
 
     return { ...button, onClick, disabled }
@@ -152,7 +140,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
   // Group buttons
   const primaryButtons = buttons.filter((b) => b.group === "primary")
   const secondaryButtons = buttons.filter((b) => b.group === "secondary")
-  const settingsButtons = buttons.filter((b) => b.group === "settings")
 
   const renderButton = (button: ToolbarButton, index: number) => {
     const buttonProps = getButtonProps(button)
@@ -203,8 +190,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
         )}
       </div>
 
-      {/* Settings */}
-      {settingsButtons.length > 0 && <div className="flex items-center">{settingsButtons.map(renderButton)}</div>}
     </div>
   )
 }

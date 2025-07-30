@@ -2,10 +2,10 @@
 
 import type React from "react"
 import { Maximize2, Minimize2, Code2 } from "lucide-react"
-import { Button } from "./button"
-import { Badge } from "./badge"
+import { Button } from "../ui/button"
+import { Badge } from "../ui/badge"
 import { designTokens, a11y } from "./design-system"
-import { cn } from "../../lib/utils"
+import { cn } from "@/lib/utils"
 
 interface HeaderProps {
   title?: string

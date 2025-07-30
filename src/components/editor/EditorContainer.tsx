@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Badge } from "./badge"
+import { Badge } from "../ui/badge"
 import { componentVariants } from "./design-system"
 import { cn } from "../../lib/utils"
 

@@ -1,9 +1,9 @@
 "use client"
 
 import type React from "react"
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "../ui/badge"
 import { designTokens } from "./design-system"
-import { cn } from "../../lib/utils"
+import { cn } from "@/lib/utils"
 
 interface StatusBarProps {
   scriptStats?: {

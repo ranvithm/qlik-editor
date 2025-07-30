@@ -1,13 +1,25 @@
-import * as React from "react"
-import { cn } from "../../lib/utils"
+"use client"
 
-interface ToasterProps {
-  className?: string
-}
+import { useTheme } from "next-themes"
+import { Toaster as Sonner, type ToasterProps } from "sonner"
 
-// Simple toast implementation since we don't have sonner installed
-const Toaster: React.FC<ToasterProps> = ({ className }) => {
-  return <div className={cn("fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]", className)} />
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme()
+
+  return (
+    <Sonner
+      theme={theme as ToasterProps["theme"]}
+      className="toaster group"
+      style={
+        {
+          "--normal-bg": "var(--popover)",
+          "--normal-text": "var(--popover-foreground)",
+          "--normal-border": "var(--border)",
+        } as React.CSSProperties
+      }
+      {...props}
+    />
+  )
 }
 
 export { Toaster }

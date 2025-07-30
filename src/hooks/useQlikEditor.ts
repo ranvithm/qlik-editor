@@ -12,8 +12,7 @@ import {
   showNotification,
   type ScriptExecutionResult,
   type NotificationOptions
-} from '../utils/editorUtils';
-import { type EditorSettings, defaultSettings } from '../components/ui/SettingsPanel';
+} from '../lib/editorUtils';
 
 export interface UseQlikEditorOptions {
   initialScript?: string;
@@ -56,12 +55,6 @@ export interface UseQlikEditorReturn {
   validationErrors: Array<{ line: number; message: string; severity: 'error' | 'warning' }>;
   isScriptValid: boolean;
   
-  // Settings
-  settings: EditorSettings;
-  updateSettings: (settings: EditorSettings) => void;
-  resetSettings: () => void;
-  isSettingsOpen: boolean;
-  toggleSettings: () => void;
 }
 
 export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditorReturn {
@@ -83,7 +76,6 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Array<{ line: number; message: string; severity: 'error' | 'warning' }>>([]);
   const [isScriptValid, setIsScriptValid] = useState(true);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // Refs
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
@@ -98,38 +90,6 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
     }
   }, [showNotifications]);
 
-  // Settings management
-  const loadSettingsFromStorage = useCallback((): EditorSettings => {
-    try {
-      const stored = localStorage.getItem('qlik-editor-settings');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return { ...defaultSettings, ...parsed };
-      }
-    } catch (error) {
-      console.warn('Failed to load settings from localStorage:', error);
-    }
-    return defaultSettings;
-  }, []);
-
-  const [settings, setSettings] = useState<EditorSettings>(() => loadSettingsFromStorage());
-
-  const updateSettings = useCallback((newSettings: EditorSettings) => {
-    setSettings(newSettings);
-    try {
-      localStorage.setItem('qlik-editor-settings', JSON.stringify(newSettings));
-    } catch (error) {
-      console.warn('Failed to save settings to localStorage:', error);
-    }
-  }, []);
-
-  const resetSettings = useCallback(() => {
-    updateSettings(defaultSettings);
-  }, [updateSettings]);
-
-  const toggleSettings = useCallback(() => {
-    setIsSettingsOpen(prev => !prev);
-  }, []);
 
   // Script setter with validation and change tracking
   const setScript = useCallback((newScript: string) => {
@@ -144,24 +104,8 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
     setValidationErrors(validation.errors);
     setIsScriptValid(validation.isValid);
     
-    // Setup auto-save
-    if (settings.autoSave && autoSaveTimeoutRef.current) {
-      clearTimeout(autoSaveTimeoutRef.current);
-    }
-    
-    if (settings.autoSave && newScript !== lastSavedScriptRef.current) {
-      autoSaveTimeoutRef.current = setTimeout(async () => {
-        try {
-          await saveScriptToFile(newScript, undefined, false); // Auto-save, not user gesture
-          lastSavedScriptRef.current = newScript;
-          setHasUnsavedChanges(false);
-        } catch (error) {
-          // Auto-save failures are silent
-          console.warn('Auto-save failed:', error);
-        }
-      }, settings.autoSaveInterval);
-    }
-  }, [onScriptChange, settings.autoSave, settings.autoSaveInterval]);
+    // Auto-save disabled - settings removed
+  }, [onScriptChange]);
 
   // Monaco editor reference management
   const setEditorRef = useCallback((editor: editor.IStandaloneCodeEditor | null) => {
@@ -444,10 +388,6 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
               handleRun();
             }
             break;
-          case ',':
-            event.preventDefault();
-            toggleSettings();
-            break;
         }
       }
       
@@ -457,10 +397,7 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
       }
       
       if (event.key === 'Escape') {
-        if (isSettingsOpen) {
-          event.preventDefault();
-          toggleSettings();
-        } else if (isRunning) {
+        if (isRunning) {
           event.preventDefault();
           handleStop();
         }
@@ -469,7 +406,7 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleSave, handleLoad, handleRun, handleToggleFullscreen, handleStop, isRunning, toggleSettings, isSettingsOpen]);
+  }, [handleSave, handleLoad, handleRun, handleToggleFullscreen, handleStop, isRunning]);
 
   return {
     // State
@@ -500,11 +437,5 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
     editorRef,
     setEditorRef,
     
-    // Settings
-    settings,
-    updateSettings,
-    resetSettings,
-    isSettingsOpen,
-    toggleSettings
   };
 }

@@ -1,5 +1,7 @@
 import { useState } from "react";
-import QlikScriptEditorComplete from "./components/QlikScriptEditorComplete";
+import QlikScriptEditorComplete from "./components/editor/QlikScriptEditorComplete";
+import { ThemeProvider } from "./components/editor/theme-provider";
+import { Toaster } from "./components/ui/sonner";
 
 const SAMPLE_SCRIPT = `// Sample Qlik Sense Data Load Script
 // This script demonstrates various Qlik features
@@ -71,14 +73,17 @@ function App() {
   };
 
   return (
-    <div className="h-screen w-full p-4 bg-gray-100">
-      <QlikScriptEditorComplete
-        initialScript={selectedScript}
-        variables={SAMPLE_VARIABLES}
-        onScriptChange={handleScriptChange}
-        title="Qlik Script Editor"
-      />
-    </div>
+    <ThemeProvider defaultTheme="dark" storageKey="qlik-ui-theme">
+      <div className="h-screen w-full p-4 bg-background">
+        <QlikScriptEditorComplete
+          initialScript={selectedScript}
+          variables={SAMPLE_VARIABLES}
+          onScriptChange={handleScriptChange}
+          title="Qlik Script Editor"
+        />
+      </div>
+        <Toaster />
+    </ThemeProvider>
   );
 }
 
