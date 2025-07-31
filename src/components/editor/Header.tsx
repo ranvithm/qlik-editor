@@ -2,10 +2,11 @@
 
 import type React from "react"
 import { Maximize2, Minimize2, Code2 } from "lucide-react"
-import { Button } from "../ui/button"
-import { Badge } from "../ui/badge"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { designTokens, a11y } from "./design-system"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
+import { ModeToggle } from "./mode-toggle"
 
 interface HeaderProps {
   title?: string
@@ -22,6 +23,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   title = "Qlik Script Editor",
+  subtitle,
   variablesCount = 0,
   scriptStats,
   isFullscreen = false,
@@ -66,6 +68,8 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         )}
 
+        <ModeToggle />
+        
         {onToggleFullscreen && (
           <Button
             variant="ghost"

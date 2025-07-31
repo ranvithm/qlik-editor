@@ -266,7 +266,7 @@ const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
             selectionHighlight: true,
             codeLens: false
           }}
-          className="border border-border rounded-lg overflow-hidden dark:border-gray-700 light:border-gray-300"
+          className="border-t border-border overflow-hidden dark:border-gray-700 light:border-gray-300"
         />
       </div>
     </div>

@@ -5,7 +5,6 @@ import QlikScriptEditor from "./QlikScriptEditor";
 import Toolbar from "./Toolbar";
 import EditorContainer from "./EditorContainer";
 import StatusBar from "./StatusBar";
-import { ModeToggle } from "./mode-toggle";
 import { useQlikEditor } from "../../hooks/useQlikEditor";
 import { Progress } from "../ui/progress";
 import { Alert, AlertDescription } from "../ui/alert";
@@ -14,19 +13,11 @@ import { Badge } from "../ui/badge";
 import { Toaster } from "../ui/sonner";
 import { designTokens, a11y } from "./design-system";
 import { cn } from "../../lib/utils";
-import {
-  Play,
-  Square,
-  RotateCcw,
-  Download,
-  Upload,
-  AlertTriangle,
+import {  AlertTriangle,
   X,
-  Undo2,
-  Redo2,
-  Database,
 } from "lucide-react";
 import type { editor } from "monaco-editor";
+import Header from "./Header";
 
 interface QlikScriptEditorCompleteProps {
   initialScript?: string;
@@ -54,75 +45,6 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
     editor.setEditorRef(editorInstance);
   };
 
-  const toolbarButtons = [
-    {
-      icon: Play,
-      label: "Run",
-      onClick: editor.handleRun,
-      disabled: editor.isRunning || !editor.isScriptValid,
-      variant: "primary" as const,
-      shortcut: "⌘R",
-      loading: editor.isRunning,
-      group: "primary" as const,
-    },
-    {
-      icon: Square,
-      label: "Stop",
-      onClick: editor.handleStop,
-      disabled: !editor.isRunning,
-      variant: "ghost" as const,
-      group: "primary" as const,
-    },
-    {
-      icon: Undo2,
-      label: "Undo",
-      onClick: editor.handleUndo,
-      variant: "ghost" as const,
-      shortcut: "⌘Z",
-      group: "secondary" as const,
-    },
-    {
-      icon: Redo2,
-      label: "Redo",
-      onClick: editor.handleRedo,
-      variant: "ghost" as const,
-      shortcut: "⌘Y",
-      group: "secondary" as const,
-    },
-    {
-      icon: RotateCcw,
-      label: "Format",
-      onClick: editor.handleFormat,
-      variant: "ghost" as const,
-      shortcut: "⇧⌥F",
-      group: "secondary" as const,
-    },
-    {
-      icon: Download,
-      label: "Save",
-      onClick: editor.handleSave,
-      variant: "ghost" as const,
-      shortcut: "⌘S",
-      group: "secondary" as const,
-    },
-    {
-      icon: Upload,
-      label: "Load",
-      onClick: editor.handleLoad,
-      variant: "ghost" as const,
-      shortcut: "⌘O",
-      group: "secondary" as const,
-    },
-    {
-      icon: Database,
-      label: "Insert Inline Data",
-      onClick: editor.handleInsertInlineData,
-      variant: "ghost" as const,
-      shortcut: "⌘I",
-      group: "secondary" as const,
-    },
-  ];
-
   const scriptStats = React.useMemo(() => {
     const lines = editor.script.split("\n");
     const cursorPosition = editor.editorRef.current?.getPosition();
@@ -139,38 +61,24 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
   }, [editor.script, editor.editorRef.current]);
 
   return (
-    <div
-      className={cn(
-        "flex flex-col h-screen w-full",
-        designTokens.colors.bg.primary,
-        "overflow-hidden",
-        className
-      )}
+     <div
+      className={cn("flex flex-col h-full w-full", designTokens.colors.bg.primary, "overflow-hidden", className)}
       role="application"
       aria-label="Qlik Script Editor Application"
     >
       <a href="#main-editor-content" className={a11y.srOnly}>
         Skip to editor
       </a>
-
-      <div className="flex items-center justify-between p-4 border-b">
-        <div>
-          <h1 className="text-xl font-semibold">{title}</h1>
-          {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
-        </div>
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary">
-            {scriptStats.lines} lines
-          </Badge>
-          <Badge variant="secondary">
-            {variables.length} variables
-          </Badge>
-          <ModeToggle />
-        </div>
-      </div>
+      <Header
+        title={title}
+        subtitle={subtitle}
+        variablesCount={variables.length}
+        scriptStats={scriptStats}
+        isFullscreen={editor.isFullscreen}
+        onToggleFullscreen={editor.handleToggleFullscreen}
+      />
 
       <Toolbar
-        buttons={toolbarButtons}
         isRunning={editor.isRunning}
         onRun={editor.handleRun}
         onStop={editor.handleStop}
@@ -182,7 +90,6 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         onInsertInlineData={editor.handleInsertInlineData}
       />
 
-      {/* Validation Errors - Dynamic height */}
       {editor.validationErrors.length > 0 && (
           <div className="flex-shrink-0 px-6 pt-4">
             <Alert className="border-red-200 bg-red-50/50 dark:border-red-800/50 dark:bg-red-950/20">
@@ -242,10 +149,9 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         </div>
       )}
 
-      {/* Main Editor - Flexible height */}
       <main
         id="main-editor-content"
-        className="flex-1 min-h-0 p-6"
+        className="flex-1 p-6"
         role="main"
         aria-label="Script editor"
       >
@@ -297,7 +203,6 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
       )}
 
 
-      {/* Sonner Toaster */}
       <Toaster />
     </div>
   );

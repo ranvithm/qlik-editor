@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { Badge } from "../ui/badge"
-import { componentVariants } from "./design-system"
-import { cn } from "../../lib/utils"
+import type React from "react";
+import { Badge } from "../ui/badge";
+import { componentVariants } from "./design-system";
+import { cn } from "../../lib/utils";
 
 interface EditorHeaderProps {
-  filename?: string
-  language?: string
-  showControls?: boolean
+  filename?: string;
+  language?: string;
+  showControls?: boolean;
 }
 
 interface EditorContainerProps {
-  children: React.ReactNode
-  className?: string
-  showHeader?: boolean
-  headerProps?: EditorHeaderProps
+  children: React.ReactNode;
+  className?: string;
+  showHeader?: boolean;
+  headerProps?: EditorHeaderProps;
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({
@@ -52,17 +52,24 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
 }) => {
   return (
     <div
-      className={cn("flex flex-col h-full w-full", componentVariants.panel.glass, "overflow-hidden", className)}
+      className={cn(
+        "flex flex-col h-full w-full",
+        componentVariants.panel.glass,
+        "overflow-hidden",
+        className
+      )}
       role="region"
       aria-label="Code editor"
     >
       {showHeader && <EditorHeader {...headerProps} />}
 
-      <div className={cn("flex-1 min-h-0", showHeader ? "" : "h-full")}>
-        {children}
+      <div
+        className={cn("flex-1 min-h-0 relative", showHeader ? "" : "h-full")}
+      >
+        <div className="absolute inset-0">{children}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EditorContainer
+export default EditorContainer;
