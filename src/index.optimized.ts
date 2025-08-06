@@ -2,7 +2,7 @@
 export { default as QlikScriptEditor } from './components/editor/QlikScriptEditor';
 export { default as QlikScriptEditorComplete } from './components/editor/QlikScriptEditorComplete';
 
-// UI Components
+// Individual UI Components for granular imports
 export { default as Header } from './components/editor/Header';
 export { default as Toolbar } from './components/editor/Toolbar';
 export { default as EditorContainer } from './components/editor/EditorContainer';
@@ -12,7 +12,7 @@ export { ModeToggle } from './components/editor/mode-toggle';
 // Theme components
 export { ThemeProvider, useTheme } from './components/editor/theme-provider';
 
-// Language definitions
+// Language definitions and utilities
 export { 
   registerQlikLanguageRefactored, 
   qlikLanguageDefinitionRefactored, 
@@ -24,9 +24,48 @@ export {
 
 // Hooks and utilities
 export { useQlikEditor } from './hooks/useQlikEditor';
+export type { UseQlikEditorOptions, UseQlikEditorReturn } from './hooks/useQlikEditor';
+
+// Editor utilities
 export * from './lib/editorUtils';
 
-// Types
+// Utility functions
+export { cn } from './lib/utils';
+
+// Context menu utilities
+export { setupEditorContextMenu, ContextMenuConfig } from './components/editor/context-menu';
+
+// Design system exports
+export { designTokens, componentVariants, a11y, animations } from './components/editor/design-system';
+
+// Re-export commonly used UI components for convenience
+export { Button, buttonVariants } from './components/ui/button';
+export { Badge, badgeVariants } from './components/ui/badge';
+export { Alert, AlertTitle, AlertDescription } from './components/ui/alert';
+export { Progress } from './components/ui/progress';
+export { Separator } from './components/ui/separator';
+export { Toaster } from './components/ui/sonner';
+
+// Dropdown menu components
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+} from './components/ui/dropdown-menu';
+
+// TypeScript interfaces and types
 export interface QlikScriptEditorProps {
   initialScript: string;
   onChange: (value: string) => void;
@@ -66,7 +105,7 @@ export interface HeaderProps {
 
 export interface ToolbarProps {
   buttons?: Array<{
-    icon: any;
+    icon: React.ComponentType<any>;
     label: string;
     onClick?: () => void;
     disabled?: boolean;
@@ -115,5 +154,40 @@ export interface EditorContainerProps {
   contentClassName?: string;
 }
 
+// Additional utility types
+export interface QlikScriptValidationResult {
+  isValid: boolean;
+  errors: Array<{
+    line: number;
+    column: number;
+    message: string;
+    severity: 'error' | 'warning' | 'info';
+  }>;
+  warnings: Array<{
+    line: number;
+    column: number;
+    message: string;
+  }>;
+}
+
+export interface ScriptExecutionResult {
+  success: boolean;
+  executionTime: number;
+  output?: string;
+  error?: string;
+  warnings?: string[];
+}
+
+export interface NotificationOptions {
+  type: 'success' | 'error' | 'warning' | 'info';
+  title: string;
+  description?: string;
+  duration?: number;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+}
+
 // Version
-export const version = '1.0.0';
+export const version = '1.0.2';

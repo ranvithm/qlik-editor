@@ -26,6 +26,11 @@ interface QlikScriptEditorCompleteProps {
   className?: string;
   title?: string;
   subtitle?: string;
+  headerClassName?: string;
+  toolbarClassName?: string;
+  editorClassName?: string;
+  statusBarClassName?: string;
+  containerClassName?: string;
 }
 
 const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
@@ -35,6 +40,11 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
   className = "",
   title = "Qlik Script Editor",
   subtitle,
+  headerClassName,
+  toolbarClassName,
+  editorClassName,
+  statusBarClassName,
+  containerClassName,
 }) => {
   const editor = useQlikEditor({
     initialScript,
@@ -76,6 +86,7 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         scriptStats={scriptStats}
         isFullscreen={editor.isFullscreen}
         onToggleFullscreen={editor.handleToggleFullscreen}
+        className={headerClassName}
       />
 
       <Toolbar
@@ -88,6 +99,7 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         onSave={editor.handleSave}
         onLoad={editor.handleLoad}
         onInsertInlineData={editor.handleInsertInlineData}
+        className={toolbarClassName}
       />
 
       {editor.validationErrors.length > 0 && (
@@ -151,7 +163,7 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
 
       <main
         id="main-editor-content"
-        className="flex-1 p-6"
+        className={cn("flex-1 p-6", containerClassName)}
         role="main"
         aria-label="Script editor"
       >
@@ -162,12 +174,14 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
             language: "qlik",
             showControls: true,
           }}
+          className={containerClassName}
         >
           <QlikScriptEditor
             initialScript={initialScript}
             onChange={editor.setScript}
             variables={variables}
             onMount={handleEditorMount}
+            className={editorClassName}
           />
         </EditorContainer>
       </main>
@@ -178,6 +192,7 @@ const QlikScriptEditorComplete: React.FC<QlikScriptEditorCompleteProps> = ({
         encoding="UTF-8"
         language="Qlik Script"
         isRunning={editor.isRunning}
+        className={statusBarClassName}
       />
 
       {/* Unsaved Changes Indicator */}

@@ -1,27 +1,14 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
-      "Bash(yarn add:*)",
-      "Bash(npx tailwindcss init:*)",
-      "Bash(yarn dlx:*)",
-      "Bash(npm run dev:*)",
-      "Bash(npm install:*)",
-      "Bash(rm:*)",
-      "Bash(npm run build:*)",
-      "Bash(find lib -name \"*.d.ts\")",
-      "Bash(find src -name \"*.ts\" -o -name \"*.tsx\")",
-      "Bash(npx tsc src/index.ts --declaration --emitDeclarationOnly --outDir lib --moduleResolution bundler --target ES2022 --module ESNext --jsx react-jsx --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck)",
-      "Bash(ls -la lib/)",
-      "Bash(npm run generate:index)",
-      "Bash(find:*)",
-      "Bash(npm uninstall:*)",
       "Bash(npm run lint)",
-      "Bash(npx kill-port:*)",
-      "Bash(true)",
-      "Bash(taskkill:*)",
-      "Bash(yarn install)",
-      "Bash(npm run lint:*)",
-      "Bash(pkill:*)"
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Bash(ls:*)",
+      "Bash(yarn build)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)"
     ],
     "deny": []
   }

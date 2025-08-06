@@ -81,7 +81,7 @@ export function useQlikEditor(options: UseQlikEditorOptions = {}): UseQlikEditor
   // Refs
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const executionControllerRef = useRef<AbortController | null>(null);
-  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const autoSaveTimeoutRef = useRef<number | null>(null);
   const lastSavedScriptRef = useRef(initialScript);
 
   // Notification helper

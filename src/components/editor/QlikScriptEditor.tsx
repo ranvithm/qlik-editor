@@ -4,22 +4,29 @@ import type React from "react"
 import { useRef, useEffect, useState, useCallback } from "react"
 import type { editor } from "monaco-editor"
 import { useTheme } from "./theme-provider"
-import { registerQlikLanguageRefactored } from "@/languages/qlik-refactored"
+import { registerQlikLanguageRefactored } from "../../languages/qlik-refactored"
 import { setupEditorContextMenu } from "./context-menu"
 import { Editor } from "@monaco-editor/react"
+import { cn } from "../../lib/utils"
 
 interface QlikScriptEditorProps {
   initialScript: string
   onChange: (script: string) => void
   variables: string[] // For auto-completion (though not yet fully implemented in language def)
   onMount?: (editor: editor.IStandaloneCodeEditor) => void
+  className?: string
+  containerClassName?: string
+  editorClassName?: string
 }
 
 const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
   initialScript,
   onChange,
   variables = [],
-  onMount
+  onMount,
+  className,
+  containerClassName,
+  editorClassName
 }) => {
   const { theme } = useTheme()
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
@@ -212,8 +219,8 @@ const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
   }, [theme, currentTheme, getMonacoTheme]);
 
   return (
-    <div className="h-full w-full flex flex-col">
-      <div className="flex-1 min-h-0">
+    <div className={cn("h-full w-full flex flex-col", className)}>
+      <div className={cn("flex-1 min-h-0", containerClassName)}>
         <Editor
           height="100%"
           defaultLanguage="qlik"
@@ -266,7 +273,7 @@ const QlikScriptEditor: React.FC<QlikScriptEditorProps> = ({
             selectionHighlight: true,
             codeLens: false
           }}
-          className="border-t border-border overflow-hidden dark:border-gray-700 light:border-gray-300"
+          className={cn("border-t border-border overflow-hidden dark:border-gray-700 light:border-gray-300", editorClassName)}
         />
       </div>
     </div>

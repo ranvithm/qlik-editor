@@ -735,7 +735,7 @@ export function registerQlikLanguageRefactored(monaco: typeof import('monaco-edi
       const wordText = word.word;
       
       // Function documentation
-      if (ALL_FUNCTIONS.includes(wordText)) {
+      if (ALL_FUNCTIONS.includes(wordText as any)) {
         const documentation = formatFunctionDocumentation(wordText);
         return {
           range: new monaco.Range(

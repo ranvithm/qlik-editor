@@ -9,6 +9,7 @@ interface EditorHeaderProps {
   filename?: string;
   language?: string;
   showControls?: boolean;
+  className?: string;
 }
 
 interface EditorContainerProps {
@@ -16,15 +17,18 @@ interface EditorContainerProps {
   className?: string;
   showHeader?: boolean;
   headerProps?: EditorHeaderProps;
+  headerClassName?: string;
+  contentClassName?: string;
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({
   filename = "script.qvs",
   language = "qlik",
   showControls = true,
+  className,
 }) => {
   return (
-    <div className="flex items-center justify-between h-10 px-4 bg-muted/20 border-b border-border/30">
+    <div className={cn("flex items-center justify-between h-10 px-4 bg-muted/20 border-b border-border/30", className)}>
       <div className="flex items-center space-x-3">
         {showControls && (
           <div className="flex items-center space-x-1.5">
@@ -49,6 +53,8 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
   className,
   showHeader = true,
   headerProps = {},
+  headerClassName,
+  contentClassName,
 }) => {
   return (
     <div
@@ -61,10 +67,10 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
       role="region"
       aria-label="Code editor"
     >
-      {showHeader && <EditorHeader {...headerProps} />}
+      {showHeader && <EditorHeader {...headerProps} className={cn(headerProps.className, headerClassName)} />}
 
       <div
-        className={cn("flex-1 min-h-0 relative", showHeader ? "" : "h-full")}
+        className={cn("flex-1 min-h-0 relative", showHeader ? "" : "h-full", contentClassName)}
       >
         <div className="absolute inset-0">{children}</div>
       </div>

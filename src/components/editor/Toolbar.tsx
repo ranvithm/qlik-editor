@@ -12,8 +12,8 @@ import {
   Undo2,
   Redo2,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
+import { Button } from "../ui/button"
+import { Separator } from "../ui/separator"
 import { cn } from "../../lib/utils"
 
 export interface ToolbarButton {

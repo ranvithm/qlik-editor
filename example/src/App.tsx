@@ -1,7 +1,8 @@
 import { useState } from "react";
-import QlikScriptEditorComplete from "./components/editor/QlikScriptEditorComplete";
-import { ThemeProvider } from "./components/editor/theme-provider";
-import { Toaster } from "./components/ui/sonner";
+import { 
+  QlikScriptEditorComplete, 
+  ThemeProvider 
+} from "qlik-script-editor";
 
 const SAMPLE_SCRIPT = `// Sample Qlik Sense Data Load Script
 // This script demonstrates various Qlik features
@@ -75,14 +76,30 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="qlik-ui-theme">
       <div className="h-screen w-full p-4 bg-background">
-        <QlikScriptEditorComplete
-          initialScript={selectedScript}
-          variables={SAMPLE_VARIABLES}
-          onScriptChange={handleScriptChange}
-          title="Qlik Script Editor"
-        />
+        <div className="mb-4">
+          <h1 className="text-2xl font-bold text-foreground">
+            🛠️ Qlik Script Editor Example
+          </h1>
+          <p className="text-muted-foreground">
+            Demonstrating the qlik-script-editor NPM package with custom className props
+          </p>
+        </div>
+        
+        <div className="h-[calc(100vh-120px)]">
+          <QlikScriptEditorComplete
+            initialScript={selectedScript}
+            variables={SAMPLE_VARIABLES}
+            onScriptChange={handleScriptChange}
+            title="Qlik Script Editor Package Demo"
+            subtitle="Using the extracted NPM module with custom styling"
+            className="border-2 border-blue-500 rounded-lg shadow-xl backdrop-blur-sm"
+            headerClassName="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+            toolbarClassName="bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md"
+            editorClassName="border-red-200 ring-1 ring-red-100"
+            statusBarClassName="bg-green-50/90 dark:bg-green-900/30 backdrop-blur-sm"
+          />
+        </div>
       </div>
-        <Toaster />
     </ThemeProvider>
   );
 }

@@ -1,39 +1,46 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
-import { resolve } from "path";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
+import dts from 'vite-plugin-dts';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      "@": resolve(__dirname, "./src"),
-    },
-  },
+  plugins: [
+    react(),
+    dts({
+      insertTypesEntry: true,
+      include: ['src/**/*'],
+      exclude: ['src/**/*.test.*', 'src/**/*.spec.*']
+    }),
+  ],
   build: {
     lib: {
-      entry: resolve(__dirname, "src/index.ts"),
-      name: "QlikEditor",
-      formats: ["es", "cjs"],
-      fileName: (format) => `qlik-editor.${format}.js`,
+      entry: resolve(__dirname, 'src/index.ts'),
+      name: 'QlikScriptEditor',
+      formats: ['es', 'cjs'],
+      fileName: (format) => `qlik-script-editor.${format}.js`,
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react/jsx-runtime", "monaco-editor"],
+      external: [
+        'react',
+        'react-dom',
+        'monaco-editor',
+        '@monaco-editor/react'
+      ],
       output: {
         globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "react/jsx-runtime": "jsx",
-          "monaco-editor": "monaco",
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          'monaco-editor': 'monaco',
+          '@monaco-editor/react': 'MonacoEditor'
         },
+        assetFileNames: 'style.css',
       },
     },
-    outDir: "lib",
-    sourcemap: true,
+    sourcemap: false,
     emptyOutDir: true,
+    cssCodeSplit: false,
   },
-  server: {
-    port: 3000,
+  css: {
+    postcss: './postcss.config.js',
   },
 });
