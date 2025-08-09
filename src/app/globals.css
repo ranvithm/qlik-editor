@@ -1,0 +1,276 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: rgb(var(--background) / <alpha-value>);
+  --color-foreground: rgb(var(--foreground) / <alpha-value>);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: rgb(var(--sidebar-ring) / <alpha-value>);
+  --color-sidebar-border: rgb(var(--sidebar-border) / <alpha-value>);
+  --color-sidebar-accent-foreground: rgb(var(--sidebar-accent-foreground) / <alpha-value>);
+  --color-sidebar-accent: rgb(var(--sidebar-accent) / <alpha-value>);
+  --color-sidebar-primary-foreground: rgb(var(--sidebar-primary-foreground) / <alpha-value>);
+  --color-sidebar-primary: rgb(var(--sidebar-primary) / <alpha-value>);
+  --color-sidebar-foreground: rgb(var(--sidebar-foreground) / <alpha-value>);
+  --color-sidebar: rgb(var(--sidebar) / <alpha-value>);
+  --color-chart-5: rgb(var(--chart-5) / <alpha-value>);
+  --color-chart-4: rgb(var(--chart-4) / <alpha-value>);
+  --color-chart-3: rgb(var(--chart-3) / <alpha-value>);
+  --color-chart-2: rgb(var(--chart-2) / <alpha-value>);
+  --color-chart-1: rgb(var(--chart-1) / <alpha-value>);
+  --color-ring: rgb(var(--ring) / <alpha-value>);
+  --color-input: rgb(var(--input) / <alpha-value>);
+  --color-border: rgb(var(--border) / <alpha-value>);
+  --color-destructive: rgb(var(--destructive) / <alpha-value>);
+  --color-accent-foreground: rgb(var(--accent-foreground) / <alpha-value>);
+  --color-accent: rgb(var(--accent) / <alpha-value>);
+  --color-muted-foreground: rgb(var(--muted-foreground) / <alpha-value>);
+  --color-muted: rgb(var(--muted) / <alpha-value>);
+  --color-secondary-foreground: rgb(var(--secondary-foreground) / <alpha-value>);
+  --color-secondary: rgb(var(--secondary) / <alpha-value>);
+  --color-primary-foreground: rgb(var(--primary-foreground) / <alpha-value>);
+  --color-primary: rgb(var(--primary) / <alpha-value>);
+  --color-popover-foreground: rgb(var(--popover-foreground) / <alpha-value>);
+  --color-popover: rgb(var(--popover) / <alpha-value>);
+  --color-card-foreground: rgb(var(--card-foreground) / <alpha-value>);
+  --color-card: rgb(var(--card) / <alpha-value>);
+  --color-destructive-foreground: rgb(var(--destructive-foreground) / <alpha-value>);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --popover: 255 255 255;
+  --popover-foreground: 15 23 42;
+  --primary: 37 99 235;
+  --primary-foreground: 248 250 252;
+  --secondary: 241 245 249;
+  --secondary-foreground: 15 23 42;
+  --muted: 248 250 252;
+  --muted-foreground: 100 116 139;
+  --accent: 241 245 249;
+  --accent-foreground: 15 23 42;
+  --destructive: 239 68 68;
+  --destructive-foreground: 248 250 252;
+  --border: 226 232 240;
+  --input: 226 232 240;
+  --ring: 37 99 235;
+  --chart-1: 37 99 235;
+  --chart-2: 16 185 129;
+  --chart-3: 245 101 101;
+  --chart-4: 251 191 36;
+  --chart-5: 139 69 19;
+  --sidebar: 255 255 255;
+  --sidebar-foreground: 15 23 42;
+  --sidebar-primary: 37 99 235;
+  --sidebar-primary-foreground: 248 250 252;
+  --sidebar-accent: 241 245 249;
+  --sidebar-accent-foreground: 15 23 42;
+  --sidebar-border: 226 232 240;
+  --sidebar-ring: 37 99 235;
+}
+
+.dark {
+  --background: 2 6 23;
+  --foreground: 248 250 252;
+  --card: 15 23 42;
+  --card-foreground: 248 250 252;
+  --popover: 15 23 42;
+  --popover-foreground: 248 250 252;
+  --primary: 59 130 246;
+  --primary-foreground: 15 23 42;
+  --secondary: 30 41 59;
+  --secondary-foreground: 248 250 252;
+  --muted: 15 23 42;
+  --muted-foreground: 148 163 184;
+  --accent: 30 41 59;
+  --accent-foreground: 248 250 252;
+  --destructive: 239 68 68;
+  --destructive-foreground: 248 250 252;
+  --border: 30 41 59;
+  --input: 30 41 59;
+  --ring: 59 130 246;
+  --chart-1: 59 130 246;
+  --chart-2: 16 185 129;
+  --chart-3: 245 101 101;
+  --chart-4: 251 191 36;
+  --chart-5: 139 69 19;
+  --sidebar: 15 23 42;
+  --sidebar-foreground: 248 250 252;
+  --sidebar-primary: 59 130 246;
+  --sidebar-primary-foreground: 15 23 42;
+  --sidebar-accent: 30 41 59;
+  --sidebar-accent-foreground: 248 250 252;
+  --sidebar-border: 30 41 59;
+  --sidebar-ring: 59 130 246;
+}
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* Homepage-style typography */
+  h1 {
+    @apply text-4xl md:text-6xl font-bold tracking-tight leading-tight text-slate-900 dark:text-white;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-white;
+  }
+  
+  h3 {
+    @apply text-2xl font-semibold tracking-tight text-slate-900 dark:text-white;
+  }
+  
+  h4 {
+    @apply text-xl font-semibold text-slate-900 dark:text-white;
+  }
+  
+  h5 {
+    @apply text-lg font-semibold text-slate-900 dark:text-white;
+  }
+  
+  h6 {
+    @apply text-base font-semibold text-slate-900 dark:text-white;
+  }
+  
+  p {
+    @apply text-base leading-7 text-slate-600 dark:text-slate-300;
+  }
+  
+  /* Improved code styling */
+  code {
+    @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium text-foreground;
+  }
+  
+  /* Prose styling for documentation with homepage theme */
+  .prose {
+    @apply max-w-none leading-7;
+  }
+  
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    @apply font-bold tracking-tight text-slate-900 dark:text-white;
+  }
+  
+  .prose p {
+    @apply mb-6 leading-7 text-slate-600 dark:text-slate-300;
+  }
+  
+  .prose code {
+    @apply text-sm px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded font-mono text-slate-900 dark:text-slate-100;
+  }
+  
+  .prose pre {
+    @apply bg-slate-900 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-4 overflow-x-auto shadow-sm;
+  }
+  
+  .prose pre code {
+    @apply bg-transparent p-0 text-slate-100;
+  }
+  
+  .prose strong {
+    @apply font-semibold text-slate-900 dark:text-white;
+  }
+  
+  .prose ul, .prose ol {
+    @apply text-slate-600 dark:text-slate-300;
+  }
+  
+  .prose li {
+    @apply mb-2;
+  }
+  
+  .prose a {
+    @apply text-blue-600 hover:underline;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-1.5 h-1.5;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400 dark:bg-slate-500;
+  }
+  
+  /* Focus improvements */
+  .focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-600;
+  }
+  
+  /* Smooth transitions */
+  * {
+    @apply transition-colors duration-200 ease-in-out;
+  }
+  
+  /* Next.js gradient animation */
+  .gradient-animation {
+    background: linear-gradient(
+      -45deg,
+      #0070f3,
+      #7928ca,
+      #ff0080,
+      #00dfd8
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
+  }
+  
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  /* Content fade-in animation */
+  .fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
