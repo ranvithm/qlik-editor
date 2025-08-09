@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "QlikScript Studio - Professional Qlik Development",
   description: "Advanced script editor for Qlik Sense and QlikView development. Features syntax highlighting, intelligent auto-completion, real-time error detection, and interactive playground.",
   keywords: "Qlik, QlikView, Qlik Sense, Script Editor, Data Visualization, Business Intelligence, Development Tools",
-  authors: [{ name: "QlikScript Studio" }],
+  authors: [{ name: "Ranjithkumar M", url: "https://ranjithm.in" }],
   creator: "QlikScript Studio",
   publisher: "QlikScript Studio",
   applicationName: "QlikScript Studio",

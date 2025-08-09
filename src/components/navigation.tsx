@@ -72,7 +72,7 @@ export function Navigation() {
               className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
             >
               <Link
-                href="https://github.com/qlik-script-editor"
+                href="https://github.com/ranvithm/qlik-editor"
                 target="_blank"
                 className="flex items-center space-x-2"
               >
@@ -134,7 +134,7 @@ export function Navigation() {
                 asChild
               >
                 <Link
-                  href="https://github.com/qlik-script-editor"
+                  href="https://github.com/ranvithm/qlik-editor"
                   target="_blank"
                   className="flex items-center space-x-2"
                 >
@@ -181,7 +181,7 @@ export function Footer() {
             </p>
             <div className="flex space-x-4">
               <Link
-                href="https://github.com/qlik-script-editor/qlik-script-editor"
+                href="https://github.com/ranvithm/qlik-editor"
                 className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors group"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -307,7 +307,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li>
                 <Link
-                  href="https://github.com/qlik-script-editor/qlik-script-editor/issues"
+                  href="https://github.com/ranvithm/qlik-editor/issues"
                   className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 flex items-center group"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -319,7 +319,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="https://github.com/qlik-script-editor/qlik-script-editor/discussions"
+                  href="https://github.com/ranvithm/qlik-editor/discussions"
                   className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 flex items-center group"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -331,7 +331,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="https://github.com/qlik-script-editor/qlik-script-editor/blob/main/LICENSE"
+                  href="https://github.com/ranvithm/qlik-editor/blob/main/LICENSE"
                   className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 flex items-center group"
                   target="_blank"
                   rel="noopener noreferrer"
